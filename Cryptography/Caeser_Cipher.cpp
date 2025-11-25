@@ -12,15 +12,25 @@ char shiftCipher(char c, int shift) {
 	}
 	else if (c >= 'a' && c <= 'z') {
 		new_c = (c - 'a' + shift) % 26 + 'a';
+		return new_c;
 	}
 	else {
 		return c;
 	}
 }
 
+std::string textsplit(std::string s, int shift) {
+	std::string result = "";
+
+	for (int i = 0; i < s.length(); i++) {
+		result += shiftCipher(s[i], shift);
+	}
+
+	return result;
+}
+
 int main() {
 	std::string text;
-	std::string result = "";
 	int shift;
 	int choice;
 
@@ -34,40 +44,27 @@ int main() {
 	line;
 	if (choice == 1 || choice == 2) {
 		std::cout << "Enter Text: ";
-		std::cin >> text;
+		std::cin.ignore();
+		std::getline(std::cin, text);
 
 		std::cout << "Enter shift >> ";
 		std::cin >> shift; 
+		line;
 
-		if (choice == 1) {
-			// Process each character
-			for (int i = 0; i < text.length(); i++) {
-				result += shiftCipher(text[i], shift);
-			}
-
-			std::cout << "CipherText:";
-			std::cout << result<< std::endl;
-		}
-		else if (choice == 2) {
+		if (choice == 1) 
 			shift = -shift;
-			// Process each character
-			for (int i = 0; i < text.length(); i++) {
-				result += shiftCipher(text[i], shift);
-			}
+			
+		shift = ((shift % 26) + 26) % 26;
 
-			std::cout << "CipherText:";
-			std::cout << result << std::endl;
-		}
-
+		std::cout << "CipherText:";
+		std::cout << textsplit(text, shift) << std::endl;
+		
 		line;
 	}
 	else {
 		std::cout << "invalid input";
 		line;
 	}
-
-
-
 
 	return 0;
 
